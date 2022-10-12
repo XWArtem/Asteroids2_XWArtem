@@ -17,7 +17,7 @@ public class MainHeroPositionUpdate : ITransformable
     private float currentRotationAngle;
     public float[] GetValueOfEntity(string entityName)
     {
-        var tempEntity = ObjectEntityRepository.AllObjectsEntities.Find(e => e.Name.Contains(entityName));
+        var tempEntity = EntityPool.MainHero;
         float[] values = new float[3];
         values[0] = tempEntity.CurrentX;
         values[1] = tempEntity.CurrentY;
@@ -26,7 +26,7 @@ public class MainHeroPositionUpdate : ITransformable
     }
     public void Move(float moveForce)
     {
-        var floatValues = GetValueOfEntity(ConstStrings.MainHeroName);
+        var floatValues = GetValueOfEntity(ConstStrings.MAINHERONAME);
 
         currentX = floatValues[0];
         currentY = floatValues[1];
@@ -34,35 +34,35 @@ public class MainHeroPositionUpdate : ITransformable
 
         deltaX = (-1) * moveSpeed * (float)Math.Sin((Math.PI / 180) * angle) * moveForce;
         deltaY = moveSpeed * (float)Math.Cos((Math.PI / 180) * angle) * moveForce;
+        
+        if (MathF.Abs(currentX + deltaX) >= 12.2f)
+        {
+            currentX *= (-1);
+        }
+        if (MathF.Abs(currentY + deltaY) >= 6.5f)
+        {
+            currentY *= (-1);
+        }
+
+        EntityPool.MainHero.CurrentX = currentX + deltaX;
+        EntityPool.MainHero.CurrentY = currentY + deltaY;
 
         TransformMainHeroAction?.Invoke(currentX + deltaX, currentY + deltaY);
-
-        ObjectEntityRepository.AllObjectsEntities.Find
-            (e => e.Name.Contains(ConstStrings.MainHeroName)).CurrentX = currentX + deltaX;
-
-        ObjectEntityRepository.AllObjectsEntities.Find
-            (e => e.Name.Contains(ConstStrings.MainHeroName)).CurrentY = currentY + deltaY;
     }
     public void Rotate(bool rotateLeft)
     {
-        var floatValues = GetValueOfEntity(ConstStrings.MainHeroName);
+        var floatValues = GetValueOfEntity(ConstStrings.MAINHERONAME);
         currentRotationAngle = floatValues[2];
 
         if (rotateLeft)
         {
             RotateMainHeroAction?.Invoke(currentRotationAngle + deltaRotation);
-            ObjectEntityRepository.AllObjectsEntities.Find
-        (e => e.Name.Contains(ConstStrings.MainHeroName)).RotationAngle = currentRotationAngle + deltaRotation;
+            EntityPool.MainHero.RotationAngle = currentRotationAngle + deltaRotation;
         }
         else
         {
             RotateMainHeroAction?.Invoke(currentRotationAngle - deltaRotation);
-            ObjectEntityRepository.AllObjectsEntities.Find
-        (e => e.Name.Contains(ConstStrings.MainHeroName)).RotationAngle = currentRotationAngle - deltaRotation;
+            EntityPool.MainHero.RotationAngle = currentRotationAngle - deltaRotation;
         }
-    }
-    public void BulletMove()
-    {
-
     }
 }

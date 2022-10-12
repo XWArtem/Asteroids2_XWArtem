@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 public class MainHeroWeapon
 {
     public static Action<float, float, float, int> bulletSpawnAction;
+    public static Action FirstShootPerfomed;
 
     private float bulletStartX;
     private float bulletStartY;
@@ -15,13 +16,20 @@ public class MainHeroWeapon
     {
         if (!_firstShootOnCooldown)
         {
-            bulletStartX = ObjectEntityRepository.AllObjectsEntities.Find(e => e.Name.Contains(ConstStrings.MainHeroName)).CurrentX;
-            bulletStartY = ObjectEntityRepository.AllObjectsEntities.Find(e => e.Name.Contains(ConstStrings.MainHeroName)).CurrentY;
-            bulletAngle = ObjectEntityRepository.AllObjectsEntities.Find(e => e.Name.Contains(ConstStrings.MainHeroName)).RotationAngle;
+            bulletStartX = EntityPool.MainHero.CurrentX;
+            bulletStartY = EntityPool.MainHero.CurrentY;
+            bulletAngle = EntityPool.MainHero.RotationAngle;
+
+            EntityPool.BulletEntitiesPool.Find
+                (e => e.Name.Contains(ConstStrings.BULLETNAME + bulletIndex.ToString())).CurrentX = bulletStartX;
+            EntityPool.BulletEntitiesPool.Find
+                (e => e.Name.Contains(ConstStrings.BULLETNAME + bulletIndex.ToString())).CurrentY = bulletStartY;
+            
             bulletSpawnAction?.Invoke(bulletStartX, bulletStartY, bulletAngle, bulletIndex);
-            bulletIndex++;
+            bulletIndex = (++bulletIndex < GameConfig.NumberOfBullets) ? bulletIndex++ : 0;
             _firstShootOnCooldown = true;
             FirstShootCooldown();
+            FirstShootPerfomed?.Invoke();
         }
     }
 

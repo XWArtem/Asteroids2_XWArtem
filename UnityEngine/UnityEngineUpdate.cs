@@ -1,6 +1,5 @@
 using UnityEngine;
 using System.Collections.Generic;
-using System.Linq;
 
 public class UnityEngineUpdate : MonoBehaviour
 {
@@ -8,11 +7,18 @@ public class UnityEngineUpdate : MonoBehaviour
     public static UnityEngineUpdate Instance;
     private AsteroidsPositionUpdate _asteroidsPositionUpdate = new AsteroidsPositionUpdate();
     private BulletPositionUpdate _bulletPositionUpdate = new BulletPositionUpdate();
+    private GameObjectPool _gameObjectPool; // убрать
 
-    public GameObject MainHero;
-    public List<GameObject> Asteroids = new List<GameObject>();
-    public List<GameObject> Bullets = new List<GameObject>();
-    
+    private PoolAsteroid _poolAsteroid;
+    private PoolBullet _poolBullet;
+    private PoolUFO _poolUFO;
+    private PoolMainHero _poolMainHero;
+
+    private GameObject _mainHero;
+
+    public List<GameObject> Asteroids = new List<GameObject>(); // убрать
+    public List<GameObject> Bullets = new List<GameObject>(); // убрать ?
+
     private void Awake()
     {
         if (Instance == null)
@@ -29,70 +35,90 @@ public class UnityEngineUpdate : MonoBehaviour
         AsteroidsPositionUpdate.RotateAsteroid += RotateAsteroid;
         BulletPositionUpdate.TransformBullet += TransformBullet;
     }
+
+    private void Start()
+    {
+        _poolAsteroid = new PoolAsteroid(GameConfig.NumberOfAsteroids);
+        _poolBullet = new PoolBullet(GameConfig.NumberOfBullets);
+        _poolUFO = new PoolUFO(GameConfig.NumberOfUFO);
+        _poolMainHero = new PoolMainHero();
+        _mainHero = _poolMainHero.MainHero;
+
+        //_gameObjectPool = new GameObjectPool
+        //    (GameConfig.NumberOfAsteroids,
+        //    GameConfig.NumberOfBullets,
+        //    GameConfig.NumberOfUFO); // убрать
+    }
+
     private void TransformMainHero(float newX, float newY)
     {
-        if (MainHero == null)
-        {
-            return;
-        }
-        MainHero.transform.position = new Vector2(newX, newY);
+        _mainHero.transform.position = new Vector2(newX, newY);
     }
+
     private void RotateMainHero(float newRotationAngle)
     {
-        if (MainHero == null)
-        {
-            return;
-        }
-        MainHero.transform.rotation = Quaternion.Euler(0.0f, 0.0f, newRotationAngle);
+        _mainHero.transform.rotation = Quaternion.Euler(0.0f, 0.0f, newRotationAngle);
     }
-    private void TransformAsteroid(float[] newX, float[] newY)
+
+    private void TransformAsteroid(int asteroidIndex, float newX, float newY)
     {
-        if (Asteroids.Count == 0)
-        {
-            return;
-        }
-        foreach (GameObject asteroid in Asteroids)
-        {
-            int index = Asteroids.IndexOf(asteroid);
-            asteroid.transform.position = new Vector2(newX[index], newY[index]);
-        }
+        var asteroid = _poolAsteroid._asteroidList[asteroidIndex];
+        asteroid.transform.position = new Vector2(newX, newY);
     }
-    private void RotateAsteroid(float[] newRotationAngle)
+
+    private void RotateAsteroid(int asteroidIndex, float newRotationAngle)
     {
-        if (Asteroids.Count == 0)
-        {
-            return;
-        }
-        foreach (GameObject asteroid in Asteroids)
-        {
-            int index = Asteroids.IndexOf(asteroid);
-            asteroid.transform.rotation = Quaternion.Euler(0.0f, 0.0f, newRotationAngle[index]);
-        }
+        var asteroid = _poolAsteroid._asteroidList[asteroidIndex];
+        asteroid.transform.rotation = Quaternion.Euler(0.0f, 0.0f, newRotationAngle);
     }
-    private void TransformBullet(float[] newX, float[] newY)
+
+    private void TransformBullet(int bulletIndex, float newX, float newY, bool isOutOfRange)
     {
-        if (Bullets.Count == 0)
-        {
-            return;
-        }
-        foreach (GameObject bullet in Bullets)
-        {
-            int index = Bullets.IndexOf(bullet);
-            //Debug.Log("NewX is: " + newX[index] + "NewY is: " + newY[index]);
-            bullet.transform.position = new Vector2(newX[index], newY[index]);
-        }
-    }
-    private void Update()
-    {
-        _asteroidsPositionUpdate.Move();
-        _asteroidsPositionUpdate.Rotate();
-        int[] bulletsIndexes = new int[Bullets.Count];
-        foreach(var bullet in Bullets)
+        var bullet = _poolBullet._bulletList[bulletIndex];
+        bullet.transform.position = new Vector2(newX, newY);
+
+        if (isOutOfRange)
         {
             
+            _poolBullet.ReturnToPool(bulletIndex);
+            EntityPool.BulletEntitiesPool.Find
+                (e => e.Name.Contains(ConstStrings.BULLETNAME + bulletIndex.ToString())).CurrentX = 0;
+            EntityPool.BulletEntitiesPool.Find
+                (e => e.Name.Contains(ConstStrings.BULLETNAME + bulletIndex.ToString())).CurrentY = 0;
+
+
+
+            _poolBullet._bulletList[bulletIndex].SetActive(false);
         }
-        //for (int i = )
-        //    ObjectEntityRepository.AllObjectsEntities.Find(e => e.Name.Contains(ConstStrings.BulletName)).Index;
-        _bulletPositionUpdate.Move(Bullets.Count);
+    }
+
+    private void FixedUpdate()
+    {
+        foreach (var asteroid in _poolAsteroid._asteroidList)
+        {
+            if (asteroid.activeSelf == true)
+            {
+                int.TryParse(asteroid.name.Replace(ConstStrings.ASTEROIDNAME, ""), out int index);
+                _asteroidsPositionUpdate.Transform(index);
+            }
+        }
+
+        foreach (var bullet in _poolBullet._bulletList)
+        {
+            if (bullet.activeSelf == true)
+            {
+                int.TryParse(bullet.name.Replace(ConstStrings.BULLETNAME, ""), out int index);
+                _bulletPositionUpdate.Move(index);
+            }
+        }
+
+        foreach (var ufo in _poolUFO._ufoList)
+        {
+            if (ufo.activeSelf == true)
+            {
+                int.TryParse(ufo.name.Replace(ConstStrings.UFONAME, ""), out int index);
+                //
+            }
+        } 
     }
 }

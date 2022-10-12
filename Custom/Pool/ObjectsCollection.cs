@@ -79,3 +79,9 @@ public class BulletEntity : ObjectEntity
     public BulletEntity(string name, int index, float X, float Y, float rotationAngle, string imagePath, EntityType entityType)
         : base(name, index, X, Y, rotationAngle, imagePath, EntityType.bullet) { }
 }
+
+public class UfoEntity : ObjectEntity
+{
+    public UfoEntity(string name, float X, float Y, float startX, float startY, float destinationX, float destinationY, float rotationAngle, bool rotateLeft, string imagePath, EntityType entityType)
+        : base(name, X, Y, startX, startY, destinationX, destinationY, rotationAngle, rotateLeft, imagePath, EntityType.UFO) { }
+}
