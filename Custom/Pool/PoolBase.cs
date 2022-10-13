@@ -34,7 +34,6 @@ public abstract class PoolBase
         var element = GetFreeElement(index);
         element.transform.position = new Vector2(startX, startY);
         element.transform.rotation = Quaternion.Euler(0f, 0f, angle);
-        //element.name = ConstStrings.BULLETNAME + index.ToString();
         
         EntityPool.BulletEntitiesPool.Find
             (e => e.Name.Contains(ConstStrings.BULLETNAME + index.ToString())).CurrentX = startX;

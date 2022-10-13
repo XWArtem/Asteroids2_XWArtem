@@ -39,7 +39,7 @@ public class MainHeroPositionUpdate : ITransformable
         {
             currentX *= (-1);
         }
-        if (MathF.Abs(currentY + deltaY) >= 6.5f)
+        if (MathF.Abs(currentY + deltaY) >= 5.2f)
         {
             currentY *= (-1);
         }

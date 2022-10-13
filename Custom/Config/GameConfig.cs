@@ -5,7 +5,7 @@ public static class GameConfig
     public const float MainHeroSpawnPositionCoordinateY = 0.0f;
 
     // ===== quantity ===== 
-    public const int NumberOfAsteroids = 5;
+    public const int NumberOfAsteroids = 15;
     public const int NumberOfBullets = 10;
     public const int NumberOfUFO = 3;
 
@@ -15,6 +15,7 @@ public static class GameConfig
 
     // ===== asteroids =====
     public const float AsteroidMoveSpeed = 0.004f;
+    public const float AsteroidRadius = 0.6f;
 
     // ===== bullets =====
     public const float BulletMoveSpeed = 0.25f;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 class PoolUFO : PoolBase 
 {
-    public List<GameObject> _ufoList = new List<GameObject>();
+    public static List<GameObject> _ufoList = new List<GameObject>();
 
     public PoolUFO(int capacity)
     {

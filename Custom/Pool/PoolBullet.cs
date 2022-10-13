@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 class PoolBullet : PoolBase
 {
-    public List<GameObject> _bulletList = new List<GameObject>();
+    public static List<GameObject> _bulletList = new List<GameObject>();
 
     public PoolBullet(int capacity)
     {
@@ -53,21 +53,13 @@ class PoolBullet : PoolBase
         return false;
     }
 
-    public void ReturnToPool(int index)
+    public static void ReturnToPool(int bulletIndex)
     {
-        // всё ломается вот здесь
+        EntityPool.BulletEntitiesPool.Find
+                (e => e.Name.Contains(ConstStrings.BULLETNAME + bulletIndex.ToString())).CurrentX = 0;
+        EntityPool.BulletEntitiesPool.Find
+            (e => e.Name.Contains(ConstStrings.BULLETNAME + bulletIndex.ToString())).CurrentY = 0;
 
-        //EntityPool.BulletEntitiesPool.Find
-        //    (e => e.Name.Contains
-        //    (ConstStrings.BULLETNAME + index.ToString())).CurrentY = 0f;
-
-        //EntityPool.BulletEntitiesPool.Find
-        //    (e => e.Name.Contains
-        //    (ConstStrings.BULLETNAME + index.ToString())).CurrentX = 0f;
-
-
-        //EntityPool.BulletEntitiesPool.Find
-        //    (e => e.Name.Contains
-        //    (ConstStrings.BULLETNAME + index.ToString())).RotationAngle = 0f;
+        _bulletList[bulletIndex].SetActive(false);
     }
 }
