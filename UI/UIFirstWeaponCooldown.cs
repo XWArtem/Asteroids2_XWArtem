@@ -13,19 +13,16 @@ public class UIFirstWeaponCooldown : MonoBehaviour
         MainHeroWeapon.FirstShootPerfomed += StartCooldown;
     }
 
-
+    private void OnDisable()
+    {
+        MainHeroWeapon.FirstShootPerfomed -= StartCooldown;
+    }
 
     private void StartCooldown()
     {
         cooldownTimer = 0f;
         _imageCooldown.fillAmount = 0f;
         StartCoroutine(StartCooldownCoroutine());
-
-        //for (int i = 0; i < 50; i++)
-        //{
-        //    await Task.Delay(10);
-        //    _imageCooldown.fillAmount = Mathf.Clamp(_imageCooldown.fillAmount += 0.02f, 0f, 1f);
-        //}
     }
 
     IEnumerator StartCooldownCoroutine()
@@ -37,6 +34,5 @@ public class UIFirstWeaponCooldown : MonoBehaviour
                 Mathf.Clamp(_imageCooldown.fillAmount += Time.deltaTime * 2, 0f, 1f);
             yield return new WaitForEndOfFrame();
         }
-        //yield return null;
     }
 }

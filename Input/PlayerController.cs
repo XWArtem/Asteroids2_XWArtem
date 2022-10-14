@@ -14,47 +14,72 @@ public class PlayerController : MonoBehaviour
     public bool _heroIsShootingSecondWeapon;
     private bool _lastFrameHeroMoved;
 
+    private bool _isActive;
+
     private void Awake()
     {
         _playerControls = new PlayerControls();
-        //_playerControls.MoveandFire.ShootFirstWeapon.performed += FirstWeaponShootPerfomed;
     }
     private void OnEnable()
     {
         _playerControls.Enable();
+        GameStates.OnGameStateChanged += SwitchControllerActivity;
     }
     private void OnDisable()
     {
         _playerControls.Disable();
-
+        GameStates.OnGameStateChanged -= SwitchControllerActivity;
     }
     private void Update()
     {
-        if (_playerControls.MoveandFire.MoveForward.ReadValue<float>() == 1)
+        if (_isActive)
         {
-            _mainHeroPositionUpdate.Move(1.0f);
-            _lastFrameHeroMoved = true;
+            if (_playerControls.MoveandFire.MoveForward.ReadValue<float>() == 1)
+            {
+                _mainHeroPositionUpdate.Move(1.0f);
+                _lastFrameHeroMoved = true;
+            }
+            else if (_playerControls.MoveandFire.MoveForward.ReadValue<float>() == 0 && _lastFrameHeroMoved)
+            {
+                StartCoroutine(InertMove());
+                _lastFrameHeroMoved = false;
+            }
+            if (_playerControls.MoveandFire.RotateLeft.ReadValue<float>() == 1)
+            {
+                _mainHeroPositionUpdate.Rotate(true);
+            }
+            if (_playerControls.MoveandFire.RotateRight.ReadValue<float>() == 1)
+            {
+                _mainHeroPositionUpdate.Rotate(false);
+            }
+            if (_playerControls.MoveandFire.ShootFirstWeapon.triggered)
+            {
+                _mainHeroWeapon.PerfomBulletShoot();
+            }
+            if (_playerControls.MoveandFire.ShootSecondWeapon.ReadValue<float>() == 1)
+            {
+
+            }
         }
-        else if (_playerControls.MoveandFire.MoveForward.ReadValue<float>() == 0 && _lastFrameHeroMoved)
+    }
+
+    private void SwitchControllerActivity(GameStates.GameState gameState)
+    {
+        switch (gameState)
         {
-            StartCoroutine(InertMove());
-            _lastFrameHeroMoved = false;
-        }
-        if (_playerControls.MoveandFire.RotateLeft.ReadValue<float>() == 1)
-        {
-            _mainHeroPositionUpdate.Rotate(true);
-        }
-        if (_playerControls.MoveandFire.RotateRight.ReadValue<float>() == 1)
-        {
-            _mainHeroPositionUpdate.Rotate(false);
-        }
-        if (_playerControls.MoveandFire.ShootFirstWeapon.triggered)
-        {
-            _mainHeroWeapon.PerfomBulletShoot();
-        }
-        if (_playerControls.MoveandFire.ShootSecondWeapon.ReadValue<float>() == 1)
-        {
-            
+            case GameStates.GameState.GameOver:
+                _isActive = false;
+                break;
+            case GameStates.GameState.PlayMode:
+                _isActive = true;
+                break;
+            case GameStates.GameState.MainMenu:
+                break;
+            case GameStates.GameState.ScoreScreen:
+                break;
+            default:
+                _isActive = true;
+                break;
         }
     }
 

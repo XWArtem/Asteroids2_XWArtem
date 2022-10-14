@@ -19,4 +19,7 @@ public static class GameConfig
 
     // ===== bullets =====
     public const float BulletMoveSpeed = 0.25f;
+
+    // ===== in-game data =====
+    public const int ScoreForAsteroid = 5;
 }

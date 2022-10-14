@@ -21,7 +21,7 @@ public class UnityEngineUpdate : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-        }
+        } 
         else
         {
             Destroy(gameObject);
@@ -35,6 +35,7 @@ public class UnityEngineUpdate : MonoBehaviour
         _poolUFO = new PoolUFO(GameConfig.NumberOfUFO);
         _poolMainHero = new PoolMainHero();
         _mainHero = _poolMainHero.MainHero;
+        GameStates.ChangeGameState(GameStates.GameState.PlayMode);
     }
 
     private void FixedUpdate()
@@ -43,8 +44,19 @@ public class UnityEngineUpdate : MonoBehaviour
         {
             if (asteroid.activeSelf == true)
             {
-                int.TryParse(asteroid.name.Replace(ConstStrings.ASTEROIDNAME, ""), out int index);
-                _asteroidsPositionUpdate.Transform(index);
+                int.TryParse(asteroid.name.Replace(ConstStrings.ASTEROIDNAME, ""), out int asteroidIndex);
+                _asteroidsPositionUpdate.Transform(asteroidIndex);
+                // check for MainHero + Asteroid
+                _collisionDetected = CollisionDetection.CheckCollision
+                    (EntityPool.AsteroidEntitiesPool[asteroidIndex].CurrentX,
+                     EntityPool.AsteroidEntitiesPool[asteroidIndex].CurrentY,
+                     EntityPool.MainHero.CurrentX,
+                     EntityPool.MainHero.CurrentY,
+                     GameConfig.AsteroidRadius);
+                if (_collisionDetected)
+                {
+                    GameStates.ChangeGameState(GameStates.GameState.GameOver);
+                }
             }
         }
 
@@ -68,17 +80,12 @@ public class UnityEngineUpdate : MonoBehaviour
                             GameConfig.AsteroidRadius);
                         if (_collisionDetected)
                         {
-                            Debug.Log("Collision detected!"); // delete
-                            //EntityPool.AsteroidEntitiesPool[asteroidIndex].CurrentX 
                             _poolAsteroid.ReturnToPool(asteroidIndex);
                             PoolBullet.ReturnToPool(bulletIndex);
-
-
+                            ScoreRepository.CurrentScore += GameConfig.ScoreForAsteroid;
                         }
                     }
-                    
                 }
-                
             }
         }
 
@@ -90,6 +97,9 @@ public class UnityEngineUpdate : MonoBehaviour
                 //
             }
         }
-
+    }
+    private void OnDisable()
+    {
+        _poolBullet.DisableAction();
     }
 }

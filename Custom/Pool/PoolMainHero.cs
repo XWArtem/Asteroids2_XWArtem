@@ -22,7 +22,6 @@ class PoolMainHero : PoolBase
 
         CreateElement(mainHeroEntity);
 
-        //_entityPool.FillMainHero(mainHeroEntity);
         EntityPool.MainHero = mainHeroEntity;
         MainHero = tempGameObject;
     }

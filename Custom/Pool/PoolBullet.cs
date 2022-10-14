@@ -10,6 +10,11 @@ class PoolBullet : PoolBase
         FillPool(capacity);
         MainHeroWeapon.bulletSpawnAction += GetFreeBullet;
     }
+    
+    public void DisableAction()
+    {
+        MainHeroWeapon.bulletSpawnAction -= GetFreeBullet;
+    }
 
     public override void FillPool (int capacity)
     {
