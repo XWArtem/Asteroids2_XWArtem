@@ -16,6 +16,7 @@ public abstract class ObjectEntity
     public float StartY = 0.0f;
     public float DestinationX = 0.0f;
     public float DestinationY = 0.0f;
+    public float Speed;
     public float RotationAngle;
     public bool RotateLeft;
     public string ImagePath;
@@ -40,7 +41,8 @@ public abstract class ObjectEntity
     public ObjectEntity(string name, 
         float X, float Y, 
         float startX, float startY, 
-        float destinationX, float destinationY, 
+        float destinationX, float destinationY,
+        float speed,
         float rotationAngle, 
         bool rotateLeft,
         string imagePath, 
@@ -53,6 +55,7 @@ public abstract class ObjectEntity
         StartY = startY;
         DestinationX = destinationX;
         DestinationY = destinationY;
+        Speed = speed;
         RotationAngle = rotationAngle;
         RotateLeft = rotateLeft;
         ImagePath = imagePath;
@@ -70,8 +73,8 @@ public class MainHeroEntity : ObjectEntity
 public class AsteroidEntity : ObjectEntity
 {
     public AsteroidEntity
-        (string name, float X, float Y, float startX, float startY, float destinationX, float destinationY, float rotationAngle, bool rotateLeft, string imagePath, EntityType entityType) 
-        : base(name, X, Y, startX, startY, destinationX, destinationY, rotationAngle, rotateLeft, imagePath, EntityType.asteroid) { }
+        (string name, float X, float Y, float startX, float startY, float destinationX, float destinationY, float speed, float rotationAngle, bool rotateLeft, string imagePath, EntityType entityType) 
+        : base(name, X, Y, startX, startY, destinationX, destinationY, speed, rotationAngle, rotateLeft, imagePath, EntityType.asteroid) { }
 }
 
 public class BulletEntity : ObjectEntity
@@ -82,6 +85,6 @@ public class BulletEntity : ObjectEntity
 
 public class UfoEntity : ObjectEntity
 {
-    public UfoEntity(string name, float X, float Y, float startX, float startY, float destinationX, float destinationY, float rotationAngle, bool rotateLeft, string imagePath, EntityType entityType)
-        : base(name, X, Y, startX, startY, destinationX, destinationY, rotationAngle, rotateLeft, imagePath, EntityType.UFO) { }
+    public UfoEntity(string name, float X, float Y, float startX, float startY, float destinationX, float destinationY,  float speed, float rotationAngle, bool rotateLeft, string imagePath, EntityType entityType)
+        : base(name, X, Y, startX, startY, destinationX, destinationY, speed, rotationAngle, rotateLeft, imagePath, EntityType.UFO) { }
 }

@@ -1,8 +1,9 @@
 public static class GameConfig
 {
-    // ===== start positions ===== 
+    // ===== main hero ===== 
     public const float MainHeroSpawnPositionCoordinateX = 0.0f;
     public const float MainHeroSpawnPositionCoordinateY = 0.0f;
+    public const float MainHeroRotateForce = 1.5f;
 
     // ===== quantity ===== 
     public const int NumberOfAsteroids = 15;

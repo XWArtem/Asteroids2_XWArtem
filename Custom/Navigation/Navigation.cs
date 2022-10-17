@@ -13,6 +13,8 @@ public class Navigation : MonoBehaviour
         EntityPool.BulletEntitiesPool.Clear();
         EntityPool.UfoEntitiesPool.Clear();
 
+        ScoreRepository.CurrentScore = 0;
+
         SceneManager.LoadScene(0);
 
         GameStates.ChangeGameState(GameStates.GameState.PlayMode);

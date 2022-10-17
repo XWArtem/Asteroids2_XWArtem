@@ -1,9 +1,12 @@
 using UnityEngine;
-using UnityEngine.UI;
+using TMPro;
+using System.Text;
 
 public class UIGameOver : MonoBehaviour
 {
     [SerializeField] private GameObject _gameOverBackground;
+    [SerializeField] private TextMeshProUGUI _scoreResultText;
+    [SerializeField] private TextMeshProUGUI _bestResultText;
 
     private void OnEnable()
     {
@@ -18,6 +21,14 @@ public class UIGameOver : MonoBehaviour
     {
         if (gameState == GameStates.GameState.GameOver)
         {
+            var builder = new StringBuilder();
+            builder.Append("You scored: ");
+            builder.Append(ScoreRepository.CurrentScore.ToString());
+            builder.Append("\nYour best result: ");
+            builder.Append(ScoreRepository.MaxScore.ToString());
+
+            _bestResultText.text = builder.ToString();
+
             _gameOverBackground.SetActive(true);
         }
         else

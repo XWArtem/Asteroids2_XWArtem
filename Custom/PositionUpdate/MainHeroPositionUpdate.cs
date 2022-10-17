@@ -56,13 +56,13 @@ public class MainHeroPositionUpdate : ITransformable
 
         if (rotateLeft)
         {
-            RotateMainHeroAction?.Invoke(currentRotationAngle + deltaRotation);
-            EntityPool.MainHero.RotationAngle = currentRotationAngle + deltaRotation;
+            RotateMainHeroAction?.Invoke(currentRotationAngle + deltaRotation * GameConfig.MainHeroRotateForce);
+            EntityPool.MainHero.RotationAngle = currentRotationAngle + deltaRotation * GameConfig.MainHeroRotateForce;
         }
         else
         {
-            RotateMainHeroAction?.Invoke(currentRotationAngle - deltaRotation);
-            EntityPool.MainHero.RotationAngle = currentRotationAngle - deltaRotation;
+            RotateMainHeroAction?.Invoke(currentRotationAngle - deltaRotation * GameConfig.MainHeroRotateForce);
+            EntityPool.MainHero.RotationAngle = currentRotationAngle - deltaRotation * GameConfig.MainHeroRotateForce;
         }
     }
 }

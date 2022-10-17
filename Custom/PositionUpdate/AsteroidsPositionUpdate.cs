@@ -16,6 +16,7 @@ public class AsteroidsPositionUpdate
     private float startY;
     private float destinationX;
     private float destinationY;
+    private float speed;
 
     private float deltaX;
     private float deltaY;
@@ -37,32 +38,34 @@ public class AsteroidsPositionUpdate
     public float[] GetEntityValues(string entityName)
     {
         var tempEntity = EntityPool.AsteroidEntitiesPool.Find(e => e.Name.Contains(entityName));
-        float[] values = new float[7];
+        float[] values = new float[8];
         values[0] = tempEntity.CurrentX;
         values[1] = tempEntity.CurrentY;
         values[2] = tempEntity.StartX;
         values[3] = tempEntity.StartY;
         values[4] = tempEntity.DestinationX;
         values[5] = tempEntity.DestinationY;
-        values[6] = tempEntity.RotationAngle;
+        values[6] = tempEntity.Speed;
+        values[7] = tempEntity.RotationAngle;
         return values;
     }
 
     private void Move(int index)
     {
-            var floatValues = GetEntityValues(ConstStrings.ASTEROIDNAME + index);
-            currentX = floatValues[0];
-            currentY = floatValues[1];
-            startX = floatValues[2];
-            startY = floatValues[3];
-            destinationX = floatValues[4];
-            destinationY = floatValues[5];
+        var floatValues = GetEntityValues(ConstStrings.ASTEROIDNAME + index);
+        currentX = floatValues[0];
+        currentY = floatValues[1];
+        startX = floatValues[2];
+        startY = floatValues[3];
+        destinationX = floatValues[4];
+        destinationY = floatValues[5];
+        speed = floatValues[6];
 
-            asteroidName = EntityPool.AsteroidEntitiesPool.Find
+        asteroidName = EntityPool.AsteroidEntitiesPool.Find
                 (e => e.Name.Contains(ConstStrings.ASTEROIDNAME + index.ToString())).Name;
 
-            deltaX = (float)Math.Clamp((startX - destinationX) * GameConfig.AsteroidMoveSpeed, -0.01, +0.01);
-            deltaY = (float)Math.Clamp((startY - destinationY) * GameConfig.AsteroidMoveSpeed, -0.01, +0.01);
+            deltaX = (float)Math.Clamp((destinationX - startX) * speed, -0.02, +0.02);
+            deltaY = (float)Math.Clamp((destinationY - startY) * speed, -0.02, +0.02);
 
             newX = currentX + deltaX;
             newY = currentY + deltaY;

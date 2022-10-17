@@ -3,7 +3,9 @@ public class ScoreRepository
     public delegate void ScoreChanged(int score);
     public static event ScoreChanged OnScoreChanged;
 
-    private static int _maxScore;
+    private static RepositoryBase _repositoryBase = new RepositoryBase();
+
+    private static int _maxScore = _repositoryBase.MaxScore;
     public static int MaxScore
     {
         get
@@ -12,9 +14,10 @@ public class ScoreRepository
         }
         set
         {
-            if (value > 0 && value > _maxScore)
+            if (value >= 0 && value > _maxScore)
             {
                 _maxScore = value;
+                _repositoryBase.Save();
             }
         }
     }
@@ -28,11 +31,13 @@ public class ScoreRepository
         }
         set
         {
-            if (value > 0)
+            if (value >= 0)
             {
                 _currentScore = value;
+                MaxScore = _currentScore;
                 OnScoreChanged(_currentScore);
             }
         }
     }
+
 }

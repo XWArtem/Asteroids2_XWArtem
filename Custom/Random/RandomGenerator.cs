@@ -20,14 +20,6 @@ public class RandomGenerator
             _pair[0].Y = GetRandomY(!randomSideSelection);
             _pair[1].X = GetRandomX(!randomSideSelection);
             _pair[1].Y = GetRandomY(randomSideSelection);
-            //if (Math.Abs(_pair[1].X) - Math.Abs(_pair[0].X) <= 2.0f)
-            //{
-            //    _pair[1].X -= 3.0f;
-            //}
-            //if (Math.Abs(_pair[1].Y) - Math.Abs(_pair[0].Y) <= 1.0f)
-            //{
-            //    _pair[0].Y -= 1.5f;
-            //}
             return _pair;
         }
         private set
@@ -69,6 +61,22 @@ public class RandomGenerator
         else
         {
             return (BoolRandom() == false) ? 6.0f : -6.0f;
+        }
+    }
+
+    public float GetRandomSpeed(EntityType entityType)
+    {
+        if (entityType == EntityType.asteroid)
+        {
+            return (float)0.0005 * _rand.Next(4, 7); // result asteroid speed: 0.002 - 0.003
+        }
+        else if (entityType == EntityType.UFO)
+        {
+            return (float)0.0005 * _rand.Next(8, 21); // result UFO speed: 0.004 - 0.01
+        }
+        else 
+        {
+            return 0f;
         }
     }
 
