@@ -30,7 +30,7 @@ class PoolUFO : PoolBase
                 0f,
                 false,
                 ConstStrings.UFOSPRITEPATH,
-                EntityType.UFO); ;
+                EntityType.UFO);
 
             EntityPool.UfoEntitiesPool.Add(ufoEntity);
             //_entityPool.FillUfoEntityPool(ufoEntity);

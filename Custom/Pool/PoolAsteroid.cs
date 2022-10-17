@@ -19,6 +19,7 @@ class PoolAsteroid : PoolBase
             var tempRouteCoordinates = base._randomGenerator.RandomPosRoute;
             bool tempRotateLeft = _randomGenerator.RotateLeftRandom;
             float tempSpeed = _randomGenerator.GetRandomSpeed(EntityType.asteroid);
+            float tempRotation = _randomGenerator.RotationZ;
 
             ObjectEntity asteroidEntity = new AsteroidEntity
                 (ConstStrings.ASTEROIDNAME + index.ToString(),
@@ -29,7 +30,7 @@ class PoolAsteroid : PoolBase
                 tempRouteCoordinates[1].X,
                 tempRouteCoordinates[1].Y,
                 tempSpeed,
-                0f,
+                tempRotation,
                 tempRotateLeft,
                 ConstStrings.ASTEROIDSPRITEPATH,
                 EntityType.asteroid);

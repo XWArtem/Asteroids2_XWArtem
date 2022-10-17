@@ -12,11 +12,13 @@ public class UIShipData : MonoBehaviour
     {
         MainHeroPositionUpdate.TransformMainHeroAction += ChangeShipCoordinates;
         MainHeroPositionUpdate.RotateMainHeroAction += ChangeShipRotation;
+        GameStates.OnGameStateChanged += ClearShipData;
     }
     private void OnDisable()
     {
         MainHeroPositionUpdate.TransformMainHeroAction -= ChangeShipCoordinates;
         MainHeroPositionUpdate.RotateMainHeroAction -= ChangeShipRotation;
+        GameStates.OnGameStateChanged -= ClearShipData;
     }
 
     private void ChangeShipCoordinates(float X, float Y)
@@ -32,6 +34,15 @@ public class UIShipData : MonoBehaviour
         angle = (float)Mathf.Round(angle * 100f) / 100f;
         _shipAngle = ("Angle: " + angle.ToString());
         _shipAngleText.text = _shipAngle;
+    }
+    
+    private void ClearShipData(GameStates.GameState gameState)
+    {
+        if (gameState == GameStates.GameState.GameOver)
+        {
+            _shipCoordinatesText.text = "";
+            _shipAngleText.text = "";
+        }
     }
 
 }

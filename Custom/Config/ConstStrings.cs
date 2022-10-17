@@ -4,7 +4,7 @@ public static class ConstStrings
     public const string MAINHEROSPRITEPATH = "Sprites/SpaceShip_02-prod";
     public const string ASTEROIDSPRITEPATH = "Sprites/asteroid_01-prod";
     public const string BULLETSPRITEPATH = "Sprites/bullet_01-prod";
-    public const string UFOSPRITEPATH = "Sprites/ufo_01-prod";
+    public const string UFOSPRITEPATH = "Sprites/ufo_02-prod";
 
     // ===== names =====
     public const string MAINHERONAME = "MainHero";

@@ -68,11 +68,11 @@ public class RandomGenerator
     {
         if (entityType == EntityType.asteroid)
         {
-            return (float)0.0005 * _rand.Next(4, 7); // result asteroid speed: 0.002 - 0.003
+            return (float)0.001 * _rand.Next(4, 39); // result asteroid speed: 0.004 - 0.038
         }
         else if (entityType == EntityType.UFO)
         {
-            return (float)0.0005 * _rand.Next(8, 21); // result UFO speed: 0.004 - 0.01
+            return (float)0.001 * _rand.Next(8, 21); // result UFO speed: 0.004 - 0.01
         }
         else 
         {

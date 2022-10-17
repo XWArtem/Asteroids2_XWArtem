@@ -18,6 +18,9 @@ public class AsteroidsPositionUpdate
     private float destinationY;
     private float speed;
 
+    private float directionX;
+    private float directionY;
+
     private float deltaX;
     private float deltaY;
 
@@ -27,7 +30,7 @@ public class AsteroidsPositionUpdate
     private float newAngle;
 
 
-    private float rotationSpeed = 0.01f;
+    private float rotationSpeed = 20f;
 
     public void Transform(int index)
     {
@@ -64,35 +67,40 @@ public class AsteroidsPositionUpdate
         asteroidName = EntityPool.AsteroidEntitiesPool.Find
                 (e => e.Name.Contains(ConstStrings.ASTEROIDNAME + index.ToString())).Name;
 
-            deltaX = (float)Math.Clamp((destinationX - startX) * speed, -0.02, +0.02);
-            deltaY = (float)Math.Clamp((destinationY - startY) * speed, -0.02, +0.02);
+        directionX = (float)Math.Clamp((destinationX - startX)/10, -1.0, 1.0);
+        directionY = (float)Math.Clamp((destinationY - startY)/10, -1.0, 1.0);
 
-            newX = currentX + deltaX;
-            newY = currentY + deltaY;
+        deltaX = (float)Math.Clamp(directionX * speed, -0.02, +0.02);
+        deltaY = (float)Math.Clamp(directionY * speed, -0.02, +0.02);
 
-            if (MathF.Abs( newX) >= 12.2f)
-            {
-                newX *= (-1);
-            }
-            if (MathF.Abs(newY) >= 6.5f)
-            {
-                newY *= (-1);
-            }
+        newX = currentX + deltaX;
+        newY = currentY + deltaY;
 
-            EntityPool.AsteroidEntitiesPool.Find(e => e.Name.Contains(asteroidName)).CurrentX = newX;
-            EntityPool.AsteroidEntitiesPool.Find(e => e.Name.Contains(asteroidName)).CurrentY = newY;
-        
+        if (MathF.Abs(newX) >= 12.2f)
+        {
+            newX *= (-1);
+        }
+        if (MathF.Abs(newY) >= 6.5f)
+        {
+            newY *= (-1);
+        }
+
+        EntityPool.AsteroidEntitiesPool.Find(e => e.Name.Contains(asteroidName)).CurrentX = newX;
+        EntityPool.AsteroidEntitiesPool.Find(e => e.Name.Contains(asteroidName)).CurrentY = newY;
+
         TransformAsteroid?.Invoke(index, newX, newY);
     }
 
     public void Rotate(int index)
     {
-            currentAngle = EntityPool.AsteroidEntitiesPool.Find(e => e.Name.Contains(ConstStrings.ASTEROIDNAME + index.ToString())).RotationAngle;
-            rotateLeft = EntityPool.AsteroidEntitiesPool.Find(e => e.Name.Contains(ConstStrings.ASTEROIDNAME + index.ToString())).RotateLeft;
+        currentAngle = EntityPool.AsteroidEntitiesPool.Find(e => e.Name.Contains(ConstStrings.ASTEROIDNAME + index.ToString())).RotationAngle;
+        rotateLeft = EntityPool.AsteroidEntitiesPool.Find(e => e.Name.Contains(ConstStrings.ASTEROIDNAME + index.ToString())).RotateLeft;
+        speed = EntityPool.AsteroidEntitiesPool.Find(e => e.Name.Contains(ConstStrings.ASTEROIDNAME + index.ToString())).Speed;
 
-            angleDelta = (rotateLeft) ? rotationSpeed : -rotationSpeed;
-            newAngle = currentAngle + angleDelta;
-            EntityPool.AsteroidEntitiesPool.Find(e => e.Name.Contains(ConstStrings.ASTEROIDNAME + index.ToString())).RotationAngle = newAngle;
+        angleDelta = (rotateLeft) ? rotationSpeed * GameConfig.AsteroidRotationForce * speed : -rotationSpeed * GameConfig.AsteroidRotationForce * speed;
+
+        newAngle = currentAngle + angleDelta;
+        EntityPool.AsteroidEntitiesPool.Find(e => e.Name.Contains(ConstStrings.ASTEROIDNAME + index.ToString())).RotationAngle = newAngle;
 
         RotateAsteroid?.Invoke(index, newAngle);
     }

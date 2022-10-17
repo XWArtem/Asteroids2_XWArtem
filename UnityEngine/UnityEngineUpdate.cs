@@ -32,7 +32,7 @@ public class UnityEngineUpdate : MonoBehaviour
     {
         _poolAsteroid = new PoolAsteroid(GameConfig.NumberOfAsteroids);
         _poolBullet = new PoolBullet(GameConfig.NumberOfBullets);
-        _poolUFO = new PoolUFO(GameConfig.NumberOfUFO);
+        _poolUFO = new PoolUFO(GameConfig.MaxNumberOfUFO);
         _poolMainHero = new PoolMainHero();
         _mainHero = _poolMainHero.MainHero;
         GameStates.ChangeGameState(GameStates.GameState.PlayMode);
@@ -52,7 +52,7 @@ public class UnityEngineUpdate : MonoBehaviour
                      EntityPool.AsteroidEntitiesPool[asteroidIndex].CurrentY,
                      EntityPool.MainHero.CurrentX,
                      EntityPool.MainHero.CurrentY,
-                     GameConfig.AsteroidRadius);
+                     GameConfig.AsteroidRadius + GameConfig.MainHeroRadius);
                 if (_collisionDetected)
                 {
                     GameStates.ChangeGameState(GameStates.GameState.GameOver);
