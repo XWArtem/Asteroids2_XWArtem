@@ -17,7 +17,7 @@ public class BulletPositionUpdate
 
     public void Move(int bulletIndex)
     {
-        var entity = EntityPool.BulletEntitiesPool.Find
+        var entity = PoolEntity.BulletEntitiesPool.Find
             (e => e.Name.Contains(ConstStrings.BULLETNAME + bulletIndex.ToString()));
 
         currentX = entity.CurrentX;
@@ -30,11 +30,11 @@ public class BulletPositionUpdate
         newX = currentX + deltaX;
         newY = currentY + deltaY;
 
-        EntityPool.BulletEntitiesPool.Find
+        PoolEntity.BulletEntitiesPool.Find
             (e => e.Name.Contains
             (ConstStrings.BULLETNAME + bulletIndex.ToString())).CurrentX = newX;
 
-        EntityPool.BulletEntitiesPool.Find
+        PoolEntity.BulletEntitiesPool.Find
             (e => e.Name.Contains
             (ConstStrings.BULLETNAME + bulletIndex.ToString())).CurrentY = newY;
 

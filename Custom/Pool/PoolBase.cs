@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using System.Collections.Generic;
 
 public abstract class PoolBase
 {
@@ -29,18 +30,19 @@ public abstract class PoolBase
         throw new Exception("Pool is empty");
     }
 
-    public GameObject GetFreeElement(float startX, float startY, float angle, int index)
+    public GameObject GetFreeElement
+        (float startX, float startY, float angle, int index, string objectName, List<ObjectEntity> objectEntityList)
     {
         var element = GetFreeElement(index);
         element.transform.position = new Vector2(startX, startY);
         element.transform.rotation = Quaternion.Euler(0f, 0f, angle);
-        
-        EntityPool.BulletEntitiesPool.Find
-            (e => e.Name.Contains(ConstStrings.BULLETNAME + index.ToString())).CurrentX = startX;
-        EntityPool.BulletEntitiesPool.Find
-            (e => e.Name.Contains(ConstStrings.BULLETNAME + index.ToString())).CurrentY = startY;
-        EntityPool.BulletEntitiesPool.Find
-            (e => e.Name.Contains(ConstStrings.BULLETNAME + index.ToString())).RotationAngle = angle;
+
+        objectEntityList.Find
+            (e => e.Name.Contains(objectName + index.ToString())).CurrentX = startX;
+        objectEntityList.Find
+            (e => e.Name.Contains(objectName + index.ToString())).CurrentY = startY;
+        objectEntityList.Find
+            (e => e.Name.Contains(objectName + index.ToString())).RotationAngle = angle;
         return element;
     }
 

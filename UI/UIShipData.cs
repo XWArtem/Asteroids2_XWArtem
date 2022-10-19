@@ -44,5 +44,4 @@ public class UIShipData : MonoBehaviour
             _shipAngleText.text = "";
         }
     }
-
 }

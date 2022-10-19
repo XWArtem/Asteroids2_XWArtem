@@ -30,7 +30,7 @@ class PoolBullet : PoolBase
             ConstStrings.BULLETSPRITEPATH,
             EntityType.bullet);
 
-            EntityPool.BulletEntitiesPool.Add(bulletEntity);
+            PoolEntity.BulletEntitiesPool.Add(bulletEntity);
             base.tempGameObject = base.CreateElement(bulletEntity);
             base.tempGameObject.SetActive(false);
             _bulletList.Add(base.tempGameObject);
@@ -39,7 +39,8 @@ class PoolBullet : PoolBase
 
     private void GetFreeBullet(float startX, float startY, float angle, int index)
     {
-        GetFreeElement(startX, startY, angle, index);
+        GetFreeElement(startX, startY, angle, index,
+            ConstStrings.BULLETNAME, PoolEntity.BulletEntitiesPool);
     }
 
     public override bool TryGetElement(out GameObject element, int bulletIndex)
@@ -60,9 +61,9 @@ class PoolBullet : PoolBase
 
     public static void ReturnToPool(int bulletIndex)
     {
-        EntityPool.BulletEntitiesPool.Find
+        PoolEntity.BulletEntitiesPool.Find
                 (e => e.Name.Contains(ConstStrings.BULLETNAME + bulletIndex.ToString())).CurrentX = 0;
-        EntityPool.BulletEntitiesPool.Find
+        PoolEntity.BulletEntitiesPool.Find
             (e => e.Name.Contains(ConstStrings.BULLETNAME + bulletIndex.ToString())).CurrentY = 0;
 
         _bulletList[bulletIndex].SetActive(false);

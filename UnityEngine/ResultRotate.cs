@@ -1,16 +1,18 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class ResultRotate : MonoBehaviour
 {
+    private GameObject tempAsteroid;
     private void Awake()
     {
-        AsteroidsPositionUpdate.RotateAsteroid += RotateAsteroid;
+        AsteroidsPositionUpdate.RotateAsteroidAction += RotateAsteroid;
         MainHeroPositionUpdate.RotateMainHeroAction += RotateMainHero;
     }
 
     private void OnDisable()
     {
-        AsteroidsPositionUpdate.RotateAsteroid -= RotateAsteroid;
+        AsteroidsPositionUpdate.RotateAsteroidAction -= RotateAsteroid;
         MainHeroPositionUpdate.RotateMainHeroAction -= RotateMainHero;
     }
     private void RotateMainHero(float newRotationAngle)
@@ -18,10 +20,16 @@ public class ResultRotate : MonoBehaviour
         UnityEngineUpdate._mainHero.transform.rotation = Quaternion.Euler(0.0f, 0.0f, newRotationAngle);
     }
 
-    private void RotateAsteroid(int asteroidIndex, float newRotationAngle)
+    private void RotateAsteroid(List<ObjectEntity> objectEntityList, int asteroidIndex, float newRotationAngle)
     {
-        var asteroid = PoolAsteroid._asteroidList[asteroidIndex];
-        asteroid.transform.rotation = Quaternion.Euler(0.0f, 0.0f, newRotationAngle);
+        if (objectEntityList == PoolEntity.AsteroidEntitiesPool)
+        {
+            tempAsteroid = PoolAsteroid._asteroidList[asteroidIndex];
+        }
+        else
+        {
+            tempAsteroid = PoolSmallAsteroid._smallAsteroidList[asteroidIndex];
+        }
+        tempAsteroid.transform.rotation = Quaternion.Euler(0.0f, 0.0f, newRotationAngle);
     }
-
 }

@@ -8,10 +8,12 @@ public class Navigation : MonoBehaviour
         PoolAsteroid._asteroidList.Clear();
         PoolBullet._bulletList.Clear();
         PoolUFO._ufoList.Clear();
+        PoolSmallAsteroid._smallAsteroidList.Clear();
 
-        EntityPool.AsteroidEntitiesPool.Clear();
-        EntityPool.BulletEntitiesPool.Clear();
-        EntityPool.UfoEntitiesPool.Clear();
+        PoolEntity.AsteroidEntitiesPool.Clear();
+        PoolEntity.BulletEntitiesPool.Clear();
+        PoolEntity.UfoEntitiesPool.Clear();
+        PoolEntity.SmallAsteroidEntitiesPool.Clear();
 
         ScoreRepository.CurrentScore = 0;
 

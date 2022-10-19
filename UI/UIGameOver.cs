@@ -5,7 +5,6 @@ using System.Text;
 public class UIGameOver : MonoBehaviour
 {
     [SerializeField] private GameObject _gameOverBackground;
-    [SerializeField] private TextMeshProUGUI _scoreResultText;
     [SerializeField] private TextMeshProUGUI _bestResultText;
 
     private void OnEnable()

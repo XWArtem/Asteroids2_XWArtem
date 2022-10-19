@@ -1,9 +1,10 @@
 using System;
+using System.Collections.Generic;
 
 public class AsteroidsPositionUpdate 
 {
-    public static Action<int, float, float> TransformAsteroid;
-    public static Action<int, float> RotateAsteroid;
+    public static Action<List<ObjectEntity>, int, float, float> TransformAsteroidAction;
+    public static Action<List<ObjectEntity>, int, float> RotateAsteroidAction;
 
     private bool rotateLeft;
 
@@ -24,23 +25,27 @@ public class AsteroidsPositionUpdate
     private float deltaX;
     private float deltaY;
 
-    private string asteroidName;
     private float newX;
     private float newY;
     private float newAngle;
 
-
     private float rotationSpeed = 20f;
 
-    public void Transform(int index)
+    public void TransformAsteroid(int index)
     {
-        Move(index);
-        Rotate(index);
+        Move(PoolEntity.AsteroidEntitiesPool, index, ConstStrings.ASTEROIDNAME);
+        Rotate(PoolEntity.AsteroidEntitiesPool, index, ConstStrings.ASTEROIDNAME);
     }
 
-    public float[] GetEntityValues(string entityName)
+    public void TransformSmallAsteroid(int index)
     {
-        var tempEntity = EntityPool.AsteroidEntitiesPool.Find(e => e.Name.Contains(entityName));
+        Move(PoolEntity.SmallAsteroidEntitiesPool, index, ConstStrings.SMALLASTEROIDNAME);
+        Rotate(PoolEntity.SmallAsteroidEntitiesPool, index, ConstStrings.SMALLASTEROIDNAME);
+    }
+
+    public float[] GetEntityValues(List<ObjectEntity> poolEntityList, string entityName)
+    {
+        var tempEntity = poolEntityList.Find(e => e.Name.Contains(entityName));
         float[] values = new float[8];
         values[0] = tempEntity.CurrentX;
         values[1] = tempEntity.CurrentY;
@@ -53,9 +58,9 @@ public class AsteroidsPositionUpdate
         return values;
     }
 
-    private void Move(int index)
+    private void Move(List<ObjectEntity> poolEntityList, int index, string asteroidName)
     {
-        var floatValues = GetEntityValues(ConstStrings.ASTEROIDNAME + index);
+        var floatValues = GetEntityValues(poolEntityList, asteroidName + index);
         currentX = floatValues[0];
         currentY = floatValues[1];
         startX = floatValues[2];
@@ -64,8 +69,8 @@ public class AsteroidsPositionUpdate
         destinationY = floatValues[5];
         speed = floatValues[6];
 
-        asteroidName = EntityPool.AsteroidEntitiesPool.Find
-                (e => e.Name.Contains(ConstStrings.ASTEROIDNAME + index.ToString())).Name;
+        asteroidName = poolEntityList.Find
+                (e => e.Name.Contains(asteroidName + index.ToString())).Name;
 
         directionX = (float)Math.Clamp((destinationX - startX)/10, -1.0, 1.0);
         directionY = (float)Math.Clamp((destinationY - startY)/10, -1.0, 1.0);
@@ -85,23 +90,23 @@ public class AsteroidsPositionUpdate
             newY *= (-1);
         }
 
-        EntityPool.AsteroidEntitiesPool.Find(e => e.Name.Contains(asteroidName)).CurrentX = newX;
-        EntityPool.AsteroidEntitiesPool.Find(e => e.Name.Contains(asteroidName)).CurrentY = newY;
+        poolEntityList.Find(e => e.Name.Contains(asteroidName)).CurrentX = newX;
+        poolEntityList.Find(e => e.Name.Contains(asteroidName)).CurrentY = newY;
 
-        TransformAsteroid?.Invoke(index, newX, newY);
+        TransformAsteroidAction?.Invoke(poolEntityList, index, newX, newY);
     }
 
-    public void Rotate(int index)
+    public void Rotate(List<ObjectEntity> poolEntityList, int index, string asteroidName)
     {
-        currentAngle = EntityPool.AsteroidEntitiesPool.Find(e => e.Name.Contains(ConstStrings.ASTEROIDNAME + index.ToString())).RotationAngle;
-        rotateLeft = EntityPool.AsteroidEntitiesPool.Find(e => e.Name.Contains(ConstStrings.ASTEROIDNAME + index.ToString())).RotateLeft;
-        speed = EntityPool.AsteroidEntitiesPool.Find(e => e.Name.Contains(ConstStrings.ASTEROIDNAME + index.ToString())).Speed;
+        currentAngle = poolEntityList.Find(e => e.Name.Contains(asteroidName + index.ToString())).RotationAngle;
+        rotateLeft = poolEntityList.Find(e => e.Name.Contains(asteroidName + index.ToString())).RotateLeft;
+        speed = poolEntityList.Find(e => e.Name.Contains(asteroidName + index.ToString())).Speed;
 
         angleDelta = (rotateLeft) ? rotationSpeed * GameConfig.AsteroidRotationForce * speed : -rotationSpeed * GameConfig.AsteroidRotationForce * speed;
 
         newAngle = currentAngle + angleDelta;
-        EntityPool.AsteroidEntitiesPool.Find(e => e.Name.Contains(ConstStrings.ASTEROIDNAME + index.ToString())).RotationAngle = newAngle;
+        poolEntityList.Find(e => e.Name.Contains(asteroidName + index.ToString())).RotationAngle = newAngle;
 
-        RotateAsteroid?.Invoke(index, newAngle);
+        RotateAsteroidAction?.Invoke(poolEntityList, index, newAngle);
     }
 }

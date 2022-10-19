@@ -16,13 +16,13 @@ public class MainHeroWeapon
     {
         if (!_firstShootOnCooldown)
         {
-            bulletStartX = EntityPool.MainHero.CurrentX;
-            bulletStartY = EntityPool.MainHero.CurrentY;
-            bulletAngle = EntityPool.MainHero.RotationAngle;
+            bulletStartX = PoolEntity.MainHero.CurrentX;
+            bulletStartY = PoolEntity.MainHero.CurrentY;
+            bulletAngle = PoolEntity.MainHero.RotationAngle;
 
-            EntityPool.BulletEntitiesPool.Find
+            PoolEntity.BulletEntitiesPool.Find
                 (e => e.Name.Contains(ConstStrings.BULLETNAME + bulletIndex.ToString())).CurrentX = bulletStartX;
-            EntityPool.BulletEntitiesPool.Find
+            PoolEntity.BulletEntitiesPool.Find
                 (e => e.Name.Contains(ConstStrings.BULLETNAME + bulletIndex.ToString())).CurrentY = bulletStartY;
             
             bulletSpawnAction?.Invoke(bulletStartX, bulletStartY, bulletAngle, bulletIndex);

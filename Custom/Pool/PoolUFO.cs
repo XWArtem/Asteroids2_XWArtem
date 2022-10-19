@@ -32,7 +32,7 @@ class PoolUFO : PoolBase
                 ConstStrings.UFOSPRITEPATH,
                 EntityType.UFO);
 
-            EntityPool.UfoEntitiesPool.Add(ufoEntity);
+            PoolEntity.UfoEntitiesPool.Add(ufoEntity);
             //_entityPool.FillUfoEntityPool(ufoEntity);
             base.tempGameObject = CreateElement(ufoEntity);
             base.tempGameObject.SetActive(false);

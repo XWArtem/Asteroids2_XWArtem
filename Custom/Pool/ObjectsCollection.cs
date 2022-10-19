@@ -2,6 +2,7 @@ public enum EntityType
 {
     mainHero,
     asteroid,
+    smallAsteroid,
     UFO,
     bullet
 }
@@ -75,6 +76,12 @@ public class AsteroidEntity : ObjectEntity
     public AsteroidEntity
         (string name, float X, float Y, float startX, float startY, float destinationX, float destinationY, float speed, float rotationAngle, bool rotateLeft, string imagePath, EntityType entityType) 
         : base(name, X, Y, startX, startY, destinationX, destinationY, speed, rotationAngle, rotateLeft, imagePath, EntityType.asteroid) { }
+}
+public class SmallAsteroidEntity : ObjectEntity
+{
+    public SmallAsteroidEntity
+        (string name, float X, float Y, float startX, float startY, float destinationX, float destinationY, float speed, float rotationAngle, bool rotateLeft, string imagePath, EntityType entityType)
+        : base(name, X, Y, startX, startY, destinationX, destinationY, speed, rotationAngle, rotateLeft, imagePath, EntityType.smallAsteroid) { }
 }
 
 public class BulletEntity : ObjectEntity

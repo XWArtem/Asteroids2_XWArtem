@@ -17,7 +17,7 @@ public class MainHeroPositionUpdate : ITransformable
     private float currentRotationAngle;
     public float[] GetValueOfEntity(string entityName)
     {
-        var tempEntity = EntityPool.MainHero;
+        var tempEntity = PoolEntity.MainHero;
         float[] values = new float[3];
         values[0] = tempEntity.CurrentX;
         values[1] = tempEntity.CurrentY;
@@ -44,8 +44,8 @@ public class MainHeroPositionUpdate : ITransformable
             currentY *= (-1);
         }
 
-        EntityPool.MainHero.CurrentX = currentX + deltaX;
-        EntityPool.MainHero.CurrentY = currentY + deltaY;
+        PoolEntity.MainHero.CurrentX = currentX + deltaX;
+        PoolEntity.MainHero.CurrentY = currentY + deltaY;
 
         TransformMainHeroAction?.Invoke(currentX + deltaX, currentY + deltaY);
     }
@@ -57,12 +57,12 @@ public class MainHeroPositionUpdate : ITransformable
         if (rotateLeft)
         {
             RotateMainHeroAction?.Invoke(currentRotationAngle + deltaRotation * GameConfig.MainHeroRotateForce);
-            EntityPool.MainHero.RotationAngle = currentRotationAngle + deltaRotation * GameConfig.MainHeroRotateForce;
+            PoolEntity.MainHero.RotationAngle = currentRotationAngle + deltaRotation * GameConfig.MainHeroRotateForce;
         }
         else
         {
             RotateMainHeroAction?.Invoke(currentRotationAngle - deltaRotation * GameConfig.MainHeroRotateForce);
-            EntityPool.MainHero.RotationAngle = currentRotationAngle - deltaRotation * GameConfig.MainHeroRotateForce;
+            PoolEntity.MainHero.RotationAngle = currentRotationAngle - deltaRotation * GameConfig.MainHeroRotateForce;
         }
     }
 }

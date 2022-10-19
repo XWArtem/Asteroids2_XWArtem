@@ -9,6 +9,13 @@ class PoolAsteroid : PoolBase
     public PoolAsteroid(int capacity)
     {
         FillPool(capacity);
+        PoolSmallAsteroid.AsteroidSpawn += AsteroidRespawn;
+        // подписаться на уничтожение астероидов. Вызвать spawnAsteroid(int index)
+    }
+
+    public void DisableAction()
+    {
+        PoolSmallAsteroid.AsteroidSpawn -= AsteroidRespawn;
     }
 
     public override void FillPool(int capacity)
@@ -35,7 +42,7 @@ class PoolAsteroid : PoolBase
                 ConstStrings.ASTEROIDSPRITEPATH,
                 EntityType.asteroid);
 
-            EntityPool.AsteroidEntitiesPool.Add(asteroidEntity);
+            PoolEntity.AsteroidEntitiesPool.Add(asteroidEntity);
             tempGameObject = CreateElement(asteroidEntity);
             _asteroidList.Add(tempGameObject);
         }
@@ -60,9 +67,7 @@ class PoolAsteroid : PoolBase
     public void ReturnToPool(int asteroidIndex)
     {
         _asteroidList[asteroidIndex].SetActive(false);
-        
-
-        AsteroidRespawn(asteroidIndex);
+        //AsteroidRespawn(asteroidIndex);
     }
 
     private async void AsteroidRespawn(int asteroidIndex)
@@ -71,16 +76,16 @@ class PoolAsteroid : PoolBase
         var tempRouteCoordinates = base._randomGenerator.RandomPosRoute;
         bool tempRotateLeft = _randomGenerator.RotateLeftRandom;
 
-        EntityPool.AsteroidEntitiesPool[asteroidIndex].CurrentX = tempRouteCoordinates[0].X;
-        EntityPool.AsteroidEntitiesPool[asteroidIndex].CurrentY = tempRouteCoordinates[0].Y;
+        PoolEntity.AsteroidEntitiesPool[asteroidIndex].CurrentX = tempRouteCoordinates[0].X;
+        PoolEntity.AsteroidEntitiesPool[asteroidIndex].CurrentY = tempRouteCoordinates[0].Y;
 
-        EntityPool.AsteroidEntitiesPool[asteroidIndex].StartX = tempRouteCoordinates[0].X;
-        EntityPool.AsteroidEntitiesPool[asteroidIndex].StartY = tempRouteCoordinates[0].Y;
+        PoolEntity.AsteroidEntitiesPool[asteroidIndex].StartX = tempRouteCoordinates[0].X;
+        PoolEntity.AsteroidEntitiesPool[asteroidIndex].StartY = tempRouteCoordinates[0].Y;
 
-        EntityPool.AsteroidEntitiesPool[asteroidIndex].DestinationX = tempRouteCoordinates[1].X;
-        EntityPool.AsteroidEntitiesPool[asteroidIndex].DestinationY = tempRouteCoordinates[1].Y;
+        PoolEntity.AsteroidEntitiesPool[asteroidIndex].DestinationX = tempRouteCoordinates[1].X;
+        PoolEntity.AsteroidEntitiesPool[asteroidIndex].DestinationY = tempRouteCoordinates[1].Y;
 
-        EntityPool.AsteroidEntitiesPool[asteroidIndex].RotateLeft = tempRotateLeft;
+        PoolEntity.AsteroidEntitiesPool[asteroidIndex].RotateLeft = tempRotateLeft;
 
         if (_asteroidList[asteroidIndex] != null)
         {
@@ -89,6 +94,5 @@ class PoolAsteroid : PoolBase
             _asteroidList[asteroidIndex].transform.rotation = Quaternion.Euler(0f, 0f, 0f);
         }
     }
-
 }
 
