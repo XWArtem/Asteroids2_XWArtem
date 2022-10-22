@@ -35,11 +35,11 @@ public class MainHeroPositionUpdate : ITransformable
         deltaX = (-1) * moveSpeed * (float)Math.Sin((Math.PI / 180) * angle) * moveForce;
         deltaY = moveSpeed * (float)Math.Cos((Math.PI / 180) * angle) * moveForce;
         
-        if (MathF.Abs(currentX + deltaX) >= 12.2f)
+        if (MathF.Abs(currentX + deltaX) >= GameConfig.MaxAxisX)
         {
             currentX *= (-1);
         }
-        if (MathF.Abs(currentY + deltaY) >= 5.2f)
+        if (MathF.Abs(currentY + deltaY) >= GameConfig.MaxAxisY + GameConfig.MainHeroRadius)
         {
             currentY *= (-1);
         }

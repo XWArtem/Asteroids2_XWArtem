@@ -71,6 +71,15 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""EscapeButton"",
+                    ""type"": ""Button"",
+                    ""id"": ""c2b99cb6-9ce9-4322-b081-8165b12455a7"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -161,6 +170,17 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""action"": ""RotateRight"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5920c934-39e2-4276-aa45-bcb62ec367cb"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EscapeButton"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -191,6 +211,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         m_MoveandFire_RotateRight = m_MoveandFire.FindAction("RotateRight", throwIfNotFound: true);
         m_MoveandFire_ShootFirstWeapon = m_MoveandFire.FindAction("ShootFirstWeapon", throwIfNotFound: true);
         m_MoveandFire_ShootSecondWeapon = m_MoveandFire.FindAction("ShootSecondWeapon", throwIfNotFound: true);
+        m_MoveandFire_EscapeButton = m_MoveandFire.FindAction("EscapeButton", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -255,6 +276,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     private readonly InputAction m_MoveandFire_RotateRight;
     private readonly InputAction m_MoveandFire_ShootFirstWeapon;
     private readonly InputAction m_MoveandFire_ShootSecondWeapon;
+    private readonly InputAction m_MoveandFire_EscapeButton;
     public struct MoveandFireActions
     {
         private @PlayerControls m_Wrapper;
@@ -264,6 +286,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         public InputAction @RotateRight => m_Wrapper.m_MoveandFire_RotateRight;
         public InputAction @ShootFirstWeapon => m_Wrapper.m_MoveandFire_ShootFirstWeapon;
         public InputAction @ShootSecondWeapon => m_Wrapper.m_MoveandFire_ShootSecondWeapon;
+        public InputAction @EscapeButton => m_Wrapper.m_MoveandFire_EscapeButton;
         public InputActionMap Get() { return m_Wrapper.m_MoveandFire; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -288,6 +311,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @ShootSecondWeapon.started -= m_Wrapper.m_MoveandFireActionsCallbackInterface.OnShootSecondWeapon;
                 @ShootSecondWeapon.performed -= m_Wrapper.m_MoveandFireActionsCallbackInterface.OnShootSecondWeapon;
                 @ShootSecondWeapon.canceled -= m_Wrapper.m_MoveandFireActionsCallbackInterface.OnShootSecondWeapon;
+                @EscapeButton.started -= m_Wrapper.m_MoveandFireActionsCallbackInterface.OnEscapeButton;
+                @EscapeButton.performed -= m_Wrapper.m_MoveandFireActionsCallbackInterface.OnEscapeButton;
+                @EscapeButton.canceled -= m_Wrapper.m_MoveandFireActionsCallbackInterface.OnEscapeButton;
             }
             m_Wrapper.m_MoveandFireActionsCallbackInterface = instance;
             if (instance != null)
@@ -307,6 +333,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @ShootSecondWeapon.started += instance.OnShootSecondWeapon;
                 @ShootSecondWeapon.performed += instance.OnShootSecondWeapon;
                 @ShootSecondWeapon.canceled += instance.OnShootSecondWeapon;
+                @EscapeButton.started += instance.OnEscapeButton;
+                @EscapeButton.performed += instance.OnEscapeButton;
+                @EscapeButton.canceled += instance.OnEscapeButton;
             }
         }
     }
@@ -327,5 +356,6 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         void OnRotateRight(InputAction.CallbackContext context);
         void OnShootFirstWeapon(InputAction.CallbackContext context);
         void OnShootSecondWeapon(InputAction.CallbackContext context);
+        void OnEscapeButton(InputAction.CallbackContext context);
     }
 }

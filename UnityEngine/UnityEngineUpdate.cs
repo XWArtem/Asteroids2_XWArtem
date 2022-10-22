@@ -9,6 +9,7 @@ public class UnityEngineUpdate : MonoBehaviour
     public static UnityEngineUpdate Instance;
     private AsteroidsPositionUpdate _asteroidsPositionUpdate = new AsteroidsPositionUpdate();
     private BulletPositionUpdate _bulletPositionUpdate = new BulletPositionUpdate();
+    private UFOPositionUpdate _ufoPositionUpdate = new UFOPositionUpdate();
 
     private PoolAsteroid _poolAsteroid;
     private PoolSmallAsteroid _poolSmallAsteroid;
@@ -30,6 +31,7 @@ public class UnityEngineUpdate : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        Application.targetFrameRate = 60;
     }
 
     private void Start()
@@ -84,6 +86,28 @@ public class UnityEngineUpdate : MonoBehaviour
                 {
                     GameStates.ChangeGameState(GameStates.GameState.GameOver);
                 }
+            }
+        }
+
+        foreach (var ufo in PoolUFO._ufoList)
+        {
+            if (ufo.activeSelf == true)
+            {
+                int.TryParse(ufo.name.Replace(ConstStrings.UFONAME, ""), out int ufoIndex);
+                _ufoPositionUpdate.TransformUFO(ufoIndex);
+
+                // check for MainHero + UFO
+                _collisionDetected = CollisionDetection.CheckCollision
+                    (PoolEntity.UFOEntitiesPool[ufoIndex].CurrentX,
+                     PoolEntity.UFOEntitiesPool[ufoIndex].CurrentY,
+                     PoolEntity.MainHero.CurrentX,
+                     PoolEntity.MainHero.CurrentY,
+                     GameConfig.UFORadius + GameConfig.MainHeroRadius);
+                if (_collisionDetected)
+                {
+                    GameStates.ChangeGameState(GameStates.GameState.GameOver);
+                }
+
             }
         }
 
@@ -143,15 +167,26 @@ public class UnityEngineUpdate : MonoBehaviour
                         }
                     }
                 }
-            }
-        }
-
-        foreach (var ufo in PoolUFO._ufoList)
-        {
-            if (ufo.activeSelf == true)
-            {
-                int.TryParse(ufo.name.Replace(ConstStrings.UFONAME, ""), out int index);
-                //
+                // check for bullet + UFO
+                foreach (var ufo in PoolUFO._ufoList)
+                {
+                    if (ufo.activeInHierarchy)
+                    {
+                        int.TryParse(ufo.name.Replace(ConstStrings.UFONAME, ""), out int UFOIndex);
+                        _collisionDetected = CollisionDetection.CheckCollision
+                            (PoolEntity.BulletEntitiesPool[bulletIndex].CurrentX,
+                            PoolEntity.BulletEntitiesPool[bulletIndex].CurrentY,
+                            PoolEntity.UFOEntitiesPool[UFOIndex].CurrentX,
+                            PoolEntity.UFOEntitiesPool[UFOIndex].CurrentY,
+                            GameConfig.UFORadius);
+                        if (_collisionDetected)
+                        {
+                            _poolUFO.ReturnToPool(UFOIndex);
+                            PoolBullet.ReturnToPool(bulletIndex);
+                            ScoreRepository.CurrentScore += GameConfig.ScoreForUFO;
+                        }
+                    }
+                }
             }
         }
     }

@@ -36,7 +36,7 @@ public class PlayerController : MonoBehaviour
         {
             if (_playerControls.MoveandFire.MoveForward.ReadValue<float>() == 1)
             {
-                _mainHeroPositionUpdate.Move(1.0f);
+                _mainHeroPositionUpdate.Move(GameConfig.MainHeroMoveSpeed);
                 _lastFrameHeroMoved = true;
             }
             else if (_playerControls.MoveandFire.MoveForward.ReadValue<float>() == 0 && _lastFrameHeroMoved)
@@ -56,10 +56,11 @@ public class PlayerController : MonoBehaviour
             {
                 _mainHeroWeapon.PerfomBulletShoot();
             }
-            if (_playerControls.MoveandFire.ShootSecondWeapon.ReadValue<float>() == 1)
+            if (_playerControls.MoveandFire.EscapeButton.ReadValue<float>() == 1)
             {
-
+                GameStates.ChangeGameState(GameStates.GameState.GameOver);
             }
+            
         }
     }
 
@@ -85,7 +86,7 @@ public class PlayerController : MonoBehaviour
 
     private IEnumerator InertMove()
     {
-        for (float i = 0.6f; i >= 0.02f; i *= 0.99f)
+        for (float i = 0.6f; i >= 0.04f; i *= 0.98f)
         {
             _mainHeroPositionUpdate.Move(i);
             yield return new WaitForEndOfFrame();

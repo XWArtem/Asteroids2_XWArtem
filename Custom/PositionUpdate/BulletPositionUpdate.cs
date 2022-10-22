@@ -38,7 +38,7 @@ public class BulletPositionUpdate
             (e => e.Name.Contains
             (ConstStrings.BULLETNAME + bulletIndex.ToString())).CurrentY = newY;
 
-        if (Mathf.Abs(newX) > 12.0f || Mathf.Abs(newY) > 5.0f)
+        if (Mathf.Abs(newX) > GameConfig.MaxAxisX + 0.5f || Mathf.Abs(newY) > GameConfig.MaxAxisY + 0.5f)
         {
             isOutOfRange = true;
         }

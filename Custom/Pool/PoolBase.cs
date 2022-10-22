@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public abstract class PoolBase
 {
     public RandomGenerator _randomGenerator = new RandomGenerator();
+    public RandomTimeGenerator _randomTimeGenerator = new RandomTimeGenerator();
     public GameObject tempGameObject;
 
     public abstract void FillPool(int capacity);
@@ -27,6 +28,7 @@ public abstract class PoolBase
         {
             return element;
         }
+        Debug.Log("index is: " + index + " and element is: " + element);
         throw new Exception("Pool is empty");
     }
 

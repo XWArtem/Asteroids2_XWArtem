@@ -2,16 +2,16 @@
 
 public class RepositoryBase
 {
-    private const string KEY_SCORE = "KEY_SCORE";
+    private const string KEY_MAXSCORE = "KEY_MAXSCORE";
     public int MaxScore = 0;
 
     public RepositoryBase() 
     {
-        MaxScore = PlayerPrefs.GetInt(KEY_SCORE, 0);
+        MaxScore = PlayerPrefs.GetInt(KEY_MAXSCORE, 0);
     }
 
     public void Save() 
     {
-        PlayerPrefs.SetInt(KEY_SCORE, ScoreRepository.MaxScore);
+        PlayerPrefs.SetInt(KEY_MAXSCORE, ScoreRepository.MaxScore);
     }
 }

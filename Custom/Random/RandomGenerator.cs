@@ -45,22 +45,22 @@ public class RandomGenerator
     {
         if (!getExtremeValue)
         {
-            return (float)_rand.NextDouble() * 11.6f * (_rand.Next(0, 1) * 2 - 1);
+            return (float)_rand.NextDouble() * GameConfig.MaxAxisX * (_rand.Next(0, 1) * 2 - 1);
         }
         else
         {
-            return (BoolRandom() == false) ? 11.6f : -11.6f;
+            return (BoolRandom() == false) ? GameConfig.MaxAxisX + 2.0f : -GameConfig.MaxAxisX - 2.0f;
         }
     }
     private float GetRandomY(bool getExtremeValue)
     {
         if (!getExtremeValue)
         {
-            return (float)_rand.NextDouble() * 6.0f * (_rand.Next(0, 2) * 2 - 1);
+            return (float)_rand.NextDouble() * GameConfig.MaxAxisY * (_rand.Next(0, 2) * 2 - 1);
         }
         else
         {
-            return (BoolRandom() == false) ? 6.0f : -6.0f;
+            return (BoolRandom() == false) ? GameConfig.MaxAxisY + 1.0f : -GameConfig.MaxAxisY - 1.0f;
         }
     }
 

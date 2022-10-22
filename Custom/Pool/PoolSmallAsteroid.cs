@@ -71,10 +71,10 @@ class PoolSmallAsteroid : PoolBase
 
                 var tempCoordinates = base._randomGenerator.RandomPos;
                 PoolEntity.SmallAsteroidEntitiesPool.Find
-                    (e => e.Name.Contains(ConstStrings.SMALLASTEROIDNAME + index.ToString())).DestinationX = tempCoordinates.X;
+                    (e => e.Name.Contains(ConstStrings.SMALLASTEROIDNAME + index.ToString())).DestinationX = tempCoordinates.X * 2;
 
                 PoolEntity.SmallAsteroidEntitiesPool.Find
-                    (e => e.Name.Contains(ConstStrings.SMALLASTEROIDNAME + index.ToString())).DestinationY = tempCoordinates.Y;
+                    (e => e.Name.Contains(ConstStrings.SMALLASTEROIDNAME + index.ToString())).DestinationY = tempCoordinates.Y * 2;
 
                 return true;
             }

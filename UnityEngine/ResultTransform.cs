@@ -9,6 +9,7 @@ public class ResultTransform : MonoBehaviour
         MainHeroPositionUpdate.TransformMainHeroAction += TransformMainHero;
         AsteroidsPositionUpdate.TransformAsteroidAction += TransformAsteroid;
         BulletPositionUpdate.TransformBullet += TransformBullet;
+        UFOPositionUpdate.TransformUFOAction += TransformUFO;
     }
 
     private void OnDisable()
@@ -16,6 +17,7 @@ public class ResultTransform : MonoBehaviour
         MainHeroPositionUpdate.TransformMainHeroAction -= TransformMainHero;
         AsteroidsPositionUpdate.TransformAsteroidAction -= TransformAsteroid;
         BulletPositionUpdate.TransformBullet -= TransformBullet;
+        UFOPositionUpdate.TransformUFOAction -= TransformUFO;
     }
 
     private void TransformMainHero(float newX, float newY)
@@ -51,5 +53,11 @@ public class ResultTransform : MonoBehaviour
         {
             PoolBullet.ReturnToPool(bulletIndex);
         }
+    }
+
+    private void TransformUFO(List<ObjectEntity> objectEntityList, int UFOIndex, float newX, float newY)
+    {
+        tempAsteroid = PoolUFO._ufoList[UFOIndex];
+        tempAsteroid.transform.position = new Vector2(newX, newY);
     }
 }

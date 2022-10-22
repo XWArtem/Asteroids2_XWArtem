@@ -26,21 +26,21 @@ public abstract class ObjectEntity
 
     public ObjectEntity(string name,
         int index,
-        float X, float Y, 
+        float currentX, float currentY, 
         float rotationAngle, 
         string imagePath, 
         EntityType entityType)
     {
         Name = name;
         Index = index;
-        CurrentX = X;
-        CurrentY = Y;
+        CurrentX = currentX;
+        CurrentY = currentY;
         RotationAngle = rotationAngle;
         ImagePath = imagePath;
         _entityType = entityType;
     }
     public ObjectEntity(string name, 
-        float X, float Y, 
+        float currentX, float currentY, 
         float startX, float startY, 
         float destinationX, float destinationY,
         float speed,
@@ -50,8 +50,8 @@ public abstract class ObjectEntity
         EntityType entityType)
     {
         Name = name;
-        CurrentX = X;
-        CurrentY = Y;
+        CurrentX = currentX;
+        CurrentY = currentY;
         StartX = startX;
         StartY = startY;
         DestinationX = destinationX;
@@ -74,24 +74,24 @@ public class MainHeroEntity : ObjectEntity
 public class AsteroidEntity : ObjectEntity
 {
     public AsteroidEntity
-        (string name, float X, float Y, float startX, float startY, float destinationX, float destinationY, float speed, float rotationAngle, bool rotateLeft, string imagePath, EntityType entityType) 
-        : base(name, X, Y, startX, startY, destinationX, destinationY, speed, rotationAngle, rotateLeft, imagePath, EntityType.asteroid) { }
+        (string name, float currentX, float currentY, float startX, float startY, float destinationX, float destinationY, float speed, float rotationAngle, bool rotateLeft, string imagePath, EntityType entityType) 
+        : base(name, currentX, currentY, startX, startY, destinationX, destinationY, speed, rotationAngle, rotateLeft, imagePath, EntityType.asteroid) { }
 }
 public class SmallAsteroidEntity : ObjectEntity
 {
     public SmallAsteroidEntity
-        (string name, float X, float Y, float startX, float startY, float destinationX, float destinationY, float speed, float rotationAngle, bool rotateLeft, string imagePath, EntityType entityType)
-        : base(name, X, Y, startX, startY, destinationX, destinationY, speed, rotationAngle, rotateLeft, imagePath, EntityType.smallAsteroid) { }
+        (string name, float currentX, float currentY, float startX, float startY, float destinationX, float destinationY, float speed, float rotationAngle, bool rotateLeft, string imagePath, EntityType entityType)
+        : base(name, currentX, currentY, startX, startY, destinationX, destinationY, speed, rotationAngle, rotateLeft, imagePath, EntityType.smallAsteroid) { }
 }
 
 public class BulletEntity : ObjectEntity
 {
-    public BulletEntity(string name, int index, float X, float Y, float rotationAngle, string imagePath, EntityType entityType)
-        : base(name, index, X, Y, rotationAngle, imagePath, EntityType.bullet) { }
+    public BulletEntity(string name, int index, float currentX, float currentY, float rotationAngle, string imagePath, EntityType entityType)
+        : base(name, index, currentX, currentY, rotationAngle, imagePath, EntityType.bullet) { }
 }
 
 public class UfoEntity : ObjectEntity
 {
-    public UfoEntity(string name, float X, float Y, float startX, float startY, float destinationX, float destinationY,  float speed, float rotationAngle, bool rotateLeft, string imagePath, EntityType entityType)
-        : base(name, X, Y, startX, startY, destinationX, destinationY, speed, rotationAngle, rotateLeft, imagePath, EntityType.UFO) { }
+    public UfoEntity(string name, float currentX, float currentY, float startX, float startY, float destinationX, float destinationY,  float speed, float rotationAngle, bool rotateLeft, string imagePath, EntityType entityType)
+        : base(name, currentX, currentY, startX, startY, destinationX, destinationY, speed, rotationAngle, rotateLeft, imagePath, EntityType.UFO) { }
 }

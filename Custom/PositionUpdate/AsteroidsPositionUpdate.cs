@@ -81,11 +81,11 @@ public class AsteroidsPositionUpdate
         newX = currentX + deltaX;
         newY = currentY + deltaY;
 
-        if (MathF.Abs(newX) >= 12.2f)
+        if (MathF.Abs(newX) >= GameConfig.MaxAxisX + 3.0f)
         {
             newX *= (-1);
         }
-        if (MathF.Abs(newY) >= 6.5f)
+        if (MathF.Abs(newY) >= GameConfig.MaxAxisY + 3.0f)
         {
             newY *= (-1);
         }
