@@ -80,7 +80,7 @@ public class RandomGenerator
         }
         else 
         {
-            return 0f;
+            throw new ArgumentException("Add random speed for " + entityType + " entity Type");
         }
     }
 

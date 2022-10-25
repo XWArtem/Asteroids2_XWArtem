@@ -28,7 +28,6 @@ public abstract class PoolBase
         {
             return element;
         }
-        Debug.Log("index is: " + index + " and element is: " + element);
         throw new Exception("Pool is empty");
     }
 
@@ -50,4 +49,3 @@ public abstract class PoolBase
 
     public abstract bool TryGetElement(out GameObject element, int index);
 }
-

@@ -31,7 +31,7 @@ public class UnityEngineUpdate : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        Application.targetFrameRate = 60;
+        Application.targetFrameRate = 300;
     }
 
     private void Start()
@@ -195,5 +195,6 @@ public class UnityEngineUpdate : MonoBehaviour
     {
         _poolBullet.DisableAction();
         _poolSmallAsteroid.DisableAction();
+        PoolUFO.cancelTokenSource.Cancel();
     }
 }

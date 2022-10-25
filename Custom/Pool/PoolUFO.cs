@@ -1,13 +1,17 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Threading;
+using UnityEngine;
 
 class PoolUFO : PoolBase
 {
-
-
     public static List<GameObject> _ufoList = new List<GameObject>();
     private PoolUFOCounter _poolUFOCounter;
+
+    public static CancellationTokenSource cancelTokenSource = new CancellationTokenSource();
+    CancellationToken cancelToken = cancelTokenSource.Token;
+
+    private bool isActive = true;
 
     public PoolUFO(int capacity)
     {
@@ -49,7 +53,8 @@ class PoolUFO : PoolBase
     {
         foreach (var item in _ufoList)
         {
-            if (!item.gameObject.activeInHierarchy &&
+            if (item.gameObject != null &&
+                !item.gameObject.activeInHierarchy &&
                 item.gameObject.name.Contains(index.ToString()))
             {
                 element = item;
@@ -65,32 +70,49 @@ class PoolUFO : PoolBase
     {
         for (int i = 0; i < GameConfig.MaxNumberOfUFO;)
         {
-            if (!_poolUFOCounter._UFOOnScene.Contains(i))
+            if (!_poolUFOCounter._UFOOnScene.Contains(i) && isActive)
             {
                 int timeToSpawn = _randomTimeGenerator.GetRandomTimerForSpawn();
-                await Task.Delay(timeToSpawn * 100);
+                
+                await Task.Run(async () => 
+                {
+                    await Task.Delay(timeToSpawn * 100);
+                    if (cancelToken.IsCancellationRequested)
+                    {
+                        isActive = false;
+                    }
+                }, cancelToken);
 
-                var tempRouteCoordinates = base._randomGenerator.RandomPosRoute;
+                if (isActive)
+                {
+                    UFORespawn(i);
+                }
 
-                GetFreeElement(tempRouteCoordinates[0].X,
-                    tempRouteCoordinates[0].Y,
-                    0,
-                    i,
-                    ConstStrings.UFONAME,
-                    PoolEntity.UFOEntitiesPool);
-                _poolUFOCounter._UFOOnScene.Add(i);
-
-                i++;
-
-                if (i > GameConfig.MaxNumberOfUFO - 1)
+                if (i >= GameConfig.MaxNumberOfUFO)
                 {
                     i = 0;
+                }
+                else
+                {
+                    i++;
                 }
             }
             else
             {
                 int timeToSpawn = _randomTimeGenerator.GetRandomTimerForSpawn();
-                await Task.Delay(timeToSpawn * 100);
+                await Task.Run(async () =>
+                {
+                    await Task.Delay(timeToSpawn * 100);
+                    if (cancelToken.IsCancellationRequested)
+                    {
+                        isActive = false;
+                    }
+                }, cancelToken);
+
+                if (cancelToken.IsCancellationRequested)
+                {
+                    isActive = false;
+                }
             }
         }
     }
@@ -99,6 +121,19 @@ class PoolUFO : PoolBase
     {
         _ufoList[ufoIndex].SetActive(false);
         _poolUFOCounter._UFOOnScene.Remove(ufoIndex);
+    }
+
+    private void UFORespawn(int index)
+    {
+        var tempRouteCoordinates = base._randomGenerator.RandomPosRoute;
+
+        GetFreeElement(tempRouteCoordinates[0].X,
+            tempRouteCoordinates[0].Y,
+            0,
+            index,
+            ConstStrings.UFONAME,
+            PoolEntity.UFOEntitiesPool);
+        _poolUFOCounter._UFOOnScene.Add(index);
     }
 }
 

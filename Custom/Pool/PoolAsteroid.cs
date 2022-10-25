@@ -10,7 +10,6 @@ class PoolAsteroid : PoolBase
     {
         FillPool(capacity);
         PoolSmallAsteroid.AsteroidSpawn += AsteroidRespawn;
-        // подписаться на уничтожение астероидов. Вызвать spawnAsteroid(int index)
     }
 
     public void DisableAction()
@@ -67,7 +66,6 @@ class PoolAsteroid : PoolBase
     public void ReturnToPool(int asteroidIndex)
     {
         _asteroidList[asteroidIndex].SetActive(false);
-        //AsteroidRespawn(asteroidIndex);
     }
 
     private async void AsteroidRespawn(int asteroidIndex)

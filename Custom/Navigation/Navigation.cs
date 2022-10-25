@@ -11,6 +11,8 @@ public class Navigation : MonoBehaviour
         PoolSmallAsteroid._smallAsteroidList.Clear();
         PoolUFO._ufoList.Clear();
 
+        PoolUFO.cancelTokenSource.Cancel();
+
         PoolEntity.AsteroidEntitiesPool.Clear();
         PoolEntity.BulletEntitiesPool.Clear();
         PoolEntity.UFOEntitiesPool.Clear();
@@ -22,10 +24,11 @@ public class Navigation : MonoBehaviour
         SceneManager.LoadScene(0);
 
         GameStates.ChangeGameState(GameStates.GameState.PlayMode);
+        
     }
     public void Quit()
     {
-        // save data
+        PoolUFO.cancelTokenSource.Cancel();
         Application.Quit();
     }
 }

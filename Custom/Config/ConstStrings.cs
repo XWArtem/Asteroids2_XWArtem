@@ -14,5 +14,4 @@ public static class ConstStrings
     public const string UFONAME = "UFO";
     public const string BULLETNAME = "Bullet";
     public const string LASERNAME = "Laser";
-
 }

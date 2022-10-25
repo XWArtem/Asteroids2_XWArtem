@@ -80,6 +80,4 @@ class UFOPositionUpdate
 
         TransformUFOAction?.Invoke(poolEntityList, index, newX, newY);
     }
-
 }
-

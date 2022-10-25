@@ -8,7 +8,7 @@ public class GameStates
         ScoreScreen
     }
 
-    public static GameState previousGameState;
+    public static GameState currentGameState;
     public static GameState newGameState;
 
     public delegate void GameStateChanged(GameState newState);
@@ -20,7 +20,6 @@ public class GameStates
         {
             OnGameStateChanged(newGameState);
         }
-        previousGameState = newGameState;
+        currentGameState = newGameState;
     }
-
 }
